@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+ char s[50], token;
+int lookahead;
+void fA();
+void fB();
+void fS();
+char getToken()
+{
+    lookahead= lookahead+1;
+    return s[lookahead];
+}
+void fS()
+{
+    switch(token)
+    {
+        case 'a': token=getToken();
+                    fA();
+                    fS();
+            break;
+        case 'c':
+            token=getToken();
+            break;
+        default:
+            printf("Error in Parsing");
+            exit(0);
+    }
+}
+void fA()
+{
+    switch(token)
+    {
+        case 'b':
+            token=getToken();
+            if(token=='a')
+                token= getToken();
+            else
+                printf("Error in Parsing");
+            break;
+        case 'a':
+        case 'c':
+            fS();
+            fB();
+            break;
+            
+        default:
+            printf("Error in Parsing");
+            exit(0);
+    }
+}
+void fB()
+{
+    switch(token)
+    {
+        case 'b':
+            token=getToken();
+            fA();
+            break;
+            
+        case 'a':
+        case 'c':
+            fS();
+            break;
+            
+        default:
+            printf("Error in Parsing");
+            exit(0);
+            
+    }
+}
+int main() {
+    gets(s);
+    char ch='$';
+    strncat(s,&ch,1);
+    token=s[0];
+    fS();
+    {
+        if(token=='$')
+            printf("Sucessfully Parsed");
+        else
+            printf("Error in Parsing");
+    }
+    
+    return 0;
+}
